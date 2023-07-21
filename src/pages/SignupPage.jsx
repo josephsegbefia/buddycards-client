@@ -27,12 +27,12 @@ function SignupPage(props) {
   const handleEmail = (e) => setEmail(e.target.value);
   const handlePassword = (e) => setPassword(e.target.value);
   const handlePasswordRepeat = (e) => setHandlePasswordRepeat(e.target.value);
-  const handleFullName = (e) => setName(e.target.value);
+  const handleFullName = (e) => setFullName(e.target.value);
 
   const handleSignupSubmit = (e) => {
     e.preventDefault();
     // Create an object representing the request body
-    const requestBody = { email, password, fullName };
+    const requestBody = { email, password, passwordRepeat, fullName };
 
     axios
       .post(`${API_URL}/auth/signup`, requestBody)
@@ -48,21 +48,37 @@ function SignupPage(props) {
   return (
     <div className="form-container">
       <Form onSubmit={handleSignupSubmit}>
+        {errorMessage && <p className="error-message">{errorMessage}</p>}
         <FormGroup>
           <Label>Full Name</Label>
-          <Input onChange={handleFullName} type="email" required />
+          <Input
+            onChange={handleFullName}
+            type="text"
+            value={fullName}
+            required
+          />
         </FormGroup>
         <FormGroup>
           <Label>Email</Label>
-          <Input onChange={handleEmail} type="text" required />
+          <Input onChange={handleEmail} type="text" value={email} required />
         </FormGroup>
         <FormGroup>
           <Label>Password</Label>
-          <Input onChange={handlePassword} type="password" required />
+          <Input
+            onChange={handlePassword}
+            type="password"
+            value={password}
+            required
+          />
         </FormGroup>
         <FormGroup>
           <Label>Password Repeat</Label>
-          <Input onChange={handlePasswordRepeat} type="password" required />
+          <Input
+            onChange={handlePasswordRepeat}
+            type="password"
+            value={passwordRepeat}
+            required
+          />
         </FormGroup>
         <SubmitButton type="submit">Sign Up</SubmitButton>
       </Form>
