@@ -51,7 +51,7 @@ export const AppDescription = styled.p`
 `;
 
 export const Form = styled.form`
-  flex: 1;
+  flex: 0.5;
   display: flex;
   flex-direction: column;
   padding: 20px;
@@ -92,4 +92,8 @@ export const SubmitButton = styled.button`
   &:hover {
     background-color: #0056b3;
   }
+`;
+
+export const Header = styled.h3`
+  text-align: center;
 `;

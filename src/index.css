@@ -58,5 +58,6 @@ a {
 .form-container {
   display: flex;
   align-items: center;
+  justify-content: center;
   height: 30rem;
 }
