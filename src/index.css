@@ -1,9 +1,62 @@
-* {
+@import url("https://fonts.googleapis.com/css2?family=Rokkitt:wght@300&display=swap");
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body,
+h1,
+h2,
+h3,
+h4,
+p,
+ul,
+ol,
+li,
+figure,
+figcaption,
+blockquote,
+dl,
+dd {
   margin: 0;
+}
+
+ul[class],
+ol[class] {
+  list-style: none;
   padding: 0;
 }
 
 body {
-  background-color: tomato;
-  color: #d0756f;
+  font-family: "Rokkitt", serif;
+  min-block-size: 100v;
+}
+img {
+  display: block;
+  max-inline-size: 100%;
+}
+p,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+li,
+figcaption {
+  max-width: 60ch;
+}
+a {
+  text-decoration: none;
+}
+
+.selected {
+  color: green;
+}
+
+.form-container {
+  display: flex;
+  align-items: center;
+  height: 30rem;
 }

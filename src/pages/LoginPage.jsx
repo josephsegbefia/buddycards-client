@@ -2,6 +2,13 @@ import { useContext, useState } from "react";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
 import { AuthContext } from "../context/auth.context";
+import {
+  Form,
+  FormGroup,
+  Label,
+  Input,
+  SubmitButton
+} from "../layout-components/components";
 
 const API_URL = "http://localhost:5005";
 
@@ -13,8 +20,8 @@ function LoginPage(props) {
   const navigate = useNavigate();
   const { storeToken, authenticateUser } = useContext(AuthContext);
 
-  const handleEmail = (e) => setEmail(e.target.value);
-  const handlePassword = (e) => setPassword(e.target.value);
+  const handleEmailChange = (e) => setEmail(e.target.value);
+  const handlePasswordChange = (e) => setPassword(e.target.value);
 
   const handleLoginSubmit = (e) => {
     e.preventDefault();
@@ -36,27 +43,18 @@ function LoginPage(props) {
   };
 
   return (
-    <div className="LoginPage">
-      <h1>Login</h1>
-
-      <form onSubmit={handleLoginSubmit}>
-        <label>Email:</label>
-        <input type="email" name="email" value={email} onChange={handleEmail} />
-
-        <label>Password:</label>
-        <input
-          type="password"
-          name="password"
-          value={password}
-          onChange={handlePassword}
-        />
-
-        <button type="submit">Login</button>
-      </form>
-      {errorMessage && <p className="error-message">{errorMessage}</p>}
-
-      <p>Don't have an account yet?</p>
-      <Link to={"/signup"}> Sign Up</Link>
+    <div className="form-container">
+      <Form onSubmit={handleLoginSubmit}>
+        <FormGroup>
+          <Label>Email</Label>
+          <Input onChange={handleEmailChange} type="email" required />
+        </FormGroup>
+        <FormGroup>
+          <Label>Password</Label>
+          <Input onChange={handlePasswordChange} type="password" required />
+        </FormGroup>
+        <SubmitButton type="submit">Login</SubmitButton>
+      </Form>
     </div>
   );
 }

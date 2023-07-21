@@ -4,18 +4,29 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 
+import {
+  Form,
+  FormGroup,
+  Label,
+  Input,
+  SubmitButton
+} from "../layout-components/components";
+
 const API_URL = "http://localhost:5005";
 
 function SignupPage(props) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [passwordRepeat, setHandlePasswordRepeat] = useState("");
   const [fullName, setFullName] = useState("");
+
   const [errorMessage, setErrorMessage] = useState(undefined);
 
   const navigate = useNavigate();
 
   const handleEmail = (e) => setEmail(e.target.value);
   const handlePassword = (e) => setPassword(e.target.value);
+  const handlePasswordRepeat = (e) => setHandlePasswordRepeat(e.target.value);
   const handleFullName = (e) => setName(e.target.value);
 
   const handleSignupSubmit = (e) => {
@@ -35,30 +46,26 @@ function SignupPage(props) {
   };
 
   return (
-    <div className="SignupPage">
-      <h1>Sign Up</h1>
-
-      <form onSubmit={handleSignupSubmit}>
-        <label>Full Name:</label>
-        <input type="text" name="name" value={name} onChange={handleFullName} />
-        <label>Email:</label>
-        <input type="email" name="email" value={email} onChange={handleEmail} />
-
-        <label>Password:</label>
-        <input
-          type="password"
-          name="password"
-          value={password}
-          onChange={handlePassword}
-        />
-
-        <button type="submit">Sign Up</button>
-      </form>
-
-      {errorMessage && <p className="error-message">{errorMessage}</p>}
-
-      <p>Already have account?</p>
-      <Link to={"/login"}> Login</Link>
+    <div className="form-container">
+      <Form onSubmit={handleSignupSubmit}>
+        <FormGroup>
+          <Label>Full Name</Label>
+          <Input onChange={handleFullName} type="email" required />
+        </FormGroup>
+        <FormGroup>
+          <Label>Email</Label>
+          <Input onChange={handleEmail} type="text" required />
+        </FormGroup>
+        <FormGroup>
+          <Label>Password</Label>
+          <Input onChange={handlePassword} type="password" required />
+        </FormGroup>
+        <FormGroup>
+          <Label>Password Repeat</Label>
+          <Input onChange={handlePasswordRepeat} type="password" required />
+        </FormGroup>
+        <SubmitButton type="submit">Sign Up</SubmitButton>
+      </Form>
     </div>
   );
 }
