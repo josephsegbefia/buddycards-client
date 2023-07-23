@@ -84,7 +84,7 @@ function CreateCard(props) {
             onChange={handleMeaningChange}
           />
         </FormGroup>
-        <SubmitButton type="submit">Sign Up</SubmitButton>
+        <SubmitButton type="submit">Save</SubmitButton>
       </Form>
     </div>
   );

@@ -1,9 +1,20 @@
 // src/components/Navbar.jsx
 
-import { Link, NavLink } from "react-router-dom";
-import { useContext } from "react"; // <== IMPORT
-import { AuthContext } from "../context/auth.context"; // <== IMPORT
-import { NavBar, NavButton } from "../layout-components/components";
+import { Link } from "react-router-dom";
+import { useContext } from "react";
+import {
+  RiHome2Line,
+  RiLoginCircleLine,
+  RiUserAddLine,
+  RiInformationLine,
+  RiLogoutCircleLine
+} from "react-icons/ri";
+import { AuthContext } from "../context/auth.context";
+import {
+  NavbarContainer,
+  NavLinks,
+  NavLink
+} from "../layout-components/components";
 
 function Navbar() {
   // Subscribe to the AuthContext to gain access to
@@ -16,46 +27,45 @@ function Navbar() {
     console.log(user._id);
   }
   return (
-    <NavBar gutter="lg" justify="center" align="center">
-      <NavLink
-        className={({ isActive }) => (isActive ? "selected" : "")}
-        to="/"
-      >
-        <NavButton>Home</NavButton>
-      </NavLink>
+    <NavbarContainer>
+      <NavLinks>
+        <NavLink>
+          <Link to="/">
+            <RiHome2Line /> Home
+          </Link>
+        </NavLink>
+        <NavLink>
+          <Link to="/about">
+            <RiInformationLine /> About
+          </Link>
+        </NavLink>
 
-      {/*    UPDATE     */}
-      {isLoggedIn && (
-        <>
-          <NavLink
-            className={({ isActive }) => (isActive ? "selected" : "")}
-            to="/projects"
-          >
-            <NavButton>Cards</NavButton>
-          </NavLink>
-          <NavButton onClick={logOutUser}>Logout</NavButton>
-          <span>{user && user.fullName}</span>
-          <span>{user && user._id}</span>
-        </>
-      )}
+        {!isLoggedIn && (
+          <>
+            <NavLink>
+              <Link to="/signup">
+                <RiUserAddLine /> Signup
+              </Link>
+            </NavLink>
+            <NavLink>
+              <Link to="/login">
+                <RiLoginCircleLine /> Login
+              </Link>
+            </NavLink>
+          </>
+        )}
 
-      {!isLoggedIn && (
-        <>
-          <NavLink
-            className={({ isActive }) => (isActive ? "selected" : "")}
-            to="/signup"
-          >
-            <NavButton>Sign Up</NavButton>
-          </NavLink>
-          <NavLink
-            className={({ isActive }) => (isActive ? "selected" : "")}
-            to="/login"
-          >
-            <NavButton>Login</NavButton>
-          </NavLink>
-        </>
-      )}
-    </NavBar>
+        {isLoggedIn && (
+          <>
+            <NavLink onClick={logOutUser}>
+              <Link>
+                <RiLogoutCircleLine /> Logout
+              </Link>
+            </NavLink>
+          </>
+        )}
+      </NavLinks>
+    </NavbarContainer>
   );
 }
 
