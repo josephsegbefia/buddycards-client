@@ -1,6 +1,6 @@
 // src/pages/SignupPage.jsx
-
-import { useState } from "react";
+import { AuthContext } from "../context/auth.context";
+import { useState, useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 
@@ -19,11 +19,13 @@ function SignupPage(props) {
   const [password, setPassword] = useState("");
   const [passwordRepeat, setHandlePasswordRepeat] = useState("");
   const [fullName, setFullName] = useState("");
+  const [userId, setUserId] = useState("");
 
   const [errorMessage, setErrorMessage] = useState(undefined);
-
+  const { user } = useContext(AuthContext);
   const navigate = useNavigate();
 
+  //   console.log(user);
   const handleEmail = (e) => setEmail(e.target.value);
   const handlePassword = (e) => setPassword(e.target.value);
   const handlePasswordRepeat = (e) => setHandlePasswordRepeat(e.target.value);
@@ -37,14 +39,26 @@ function SignupPage(props) {
     axios
       .post(`${API_URL}/auth/signup`, requestBody)
       .then((response) => {
+        // console.log(response.data.user._id);
+        const userId = response.data.user._id; // Get the userId from the response
+        setUserId(userId);
         navigate("/login");
+
+        // Move the second request inside this .then() block
+        axios
+          .post(`${API_URL}/api/setup-profile/${userId}`, requestBody)
+          .then((response) => {
+            console.log("profile created");
+          })
+          .catch((error) => {
+            console.log(error);
+          });
       })
       .catch((error) => {
         const errorDescription = error.response.data.message;
         setErrorMessage(errorDescription);
       });
   };
-
   return (
     <div className="form-container">
       <Form onSubmit={handleSignupSubmit}>

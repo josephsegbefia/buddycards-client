@@ -15,8 +15,7 @@ const API_URL = "http://localhost:5005";
 
 function CreateCard(props) {
   const [word, setWord] = useState("");
-  const [partOfSpeech, setPartOfSpeech] = useState("");
-  const [meaning, setMeaning] = useState("");
+  const [saveStatus, setSaveStatus] = useState("Ready");
 
   const { user } = useContext(AuthContext);
   const navigate = useNavigate();
@@ -36,18 +35,42 @@ function CreateCard(props) {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    const requestBody = { user, word, partOfSpeech, meaning };
+    setSaveStatus("Saving");
 
+    const wordBody = { word };
     axios
-      .post(`${API_URL}/api/flashcards`, requestBody)
+      .post(`${API_URL}/api/word-manipulation`, wordBody)
       .then((response) => {
-        // console.log("Response", response.data);
+        console.log(response.data);
+        let conjugations = response.data.conjugations;
+        let translation = response.data.translatedWord;
+        let pos = response.data.pos[0].terms;
 
-        navigate("/");
+        let requestBody = {
+          user,
+          word,
+          conjugations,
+          translation,
+          partOfSpeech: pos
+        };
+
+        axios
+          .post(`${API_URL}/api/flashcards`, requestBody)
+          .then((response) => {
+            setSaveStatus("Success");
+            console.log(response.data);
+          })
+          .catch((error) => {
+            setSaveStatus("Error");
+            console.log(error);
+          });
       })
       .catch((error) => {
+        setSaveStatus("Error");
         console.log(error);
       });
+
+    setWord("");
   };
 
   return (
@@ -58,13 +81,13 @@ function CreateCard(props) {
           <Label>Word:</Label>
           <Input
             type="text"
-            placeholder="word"
+            placeholder="word: A German word or sentence"
             name="word"
             value={word}
             onChange={handleWordChange}
           />
         </FormGroup>
-        <FormGroup>
+        {/* <FormGroup>
           <Label>POS:</Label>
           <Input
             type="text"
@@ -73,8 +96,8 @@ function CreateCard(props) {
             value={partOfSpeech}
             onChange={handlePartOfSpeechChange}
           />
-        </FormGroup>
-        <FormGroup>
+        </FormGroup> */}
+        {/* <FormGroup>
           <Label>Meaning:</Label>
           <Input
             type="text"
@@ -83,8 +106,33 @@ function CreateCard(props) {
             value={meaning}
             onChange={handleMeaningChange}
           />
-        </FormGroup>
-        <SubmitButton type="submit">Save</SubmitButton>
+        </FormGroup> */}
+        {
+          {
+            Saving: (
+              <SubmitButton value="Creating..." type="submit" disabled>
+                Creating Card...
+              </SubmitButton>
+            ),
+            Success: (
+              <SubmitButton value="Saved" type="submit" disabled>
+                Card Created!
+              </SubmitButton>
+            ),
+            Error: (
+              <SubmitButton
+                value="Save Failed - Retry?"
+                type="submit"
+              ></SubmitButton>
+            ),
+            Ready: (
+              <SubmitButton value="Save" type="submit">
+                Create Card
+              </SubmitButton>
+            )
+          }[saveStatus]
+        }
+        <br />
       </Form>
     </div>
   );

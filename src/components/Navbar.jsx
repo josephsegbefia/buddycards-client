@@ -7,7 +7,8 @@ import {
   RiLoginCircleLine,
   RiUserAddLine,
   RiInformationLine,
-  RiLogoutCircleLine
+  RiLogoutCircleLine,
+  RiUserLine
 } from "react-icons/ri";
 import { AuthContext } from "../context/auth.context";
 import {
@@ -25,6 +26,7 @@ function Navbar() {
   //  depending on whether the user is logged in or not
   if (user) {
     console.log(user._id);
+    let userId = user._id;
   }
   return (
     <NavbarContainer>
@@ -60,6 +62,11 @@ function Navbar() {
             <NavLink onClick={logOutUser}>
               <Link>
                 <RiLogoutCircleLine /> Logout
+              </Link>
+            </NavLink>
+            <NavLink>
+              <Link to={`/profile/${user._id}`}>
+                <RiUserLine /> Profile
               </Link>
             </NavLink>
           </>
