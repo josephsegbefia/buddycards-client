@@ -59,5 +59,13 @@ a {
   display: flex;
   align-items: center;
   justify-content: center;
+
   height: 30rem;
+}
+
+.flashcard-container {
+  display: flex;
+  flex-direction: column;
+  /* justify-content: center; */
+  align-items: center;
 }

@@ -17,7 +17,7 @@ function ProfileNav() {
       <NavbarContainer>
         <NavLinks>
           <NavLink>
-            <Link to="/cards">
+            <Link to={`/users/flashcards`}>
               <RiFileListLine /> Cards
             </Link>
           </NavLink>

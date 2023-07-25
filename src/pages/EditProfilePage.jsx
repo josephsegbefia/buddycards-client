@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import axios from "axios";
 import { default as ReactSelect } from "react-select";
 
@@ -19,10 +19,13 @@ function EditProfilePage({ handleClose }) {
   const [bio, setBio] = useState("");
   const [location, setLocation] = useState("");
   const [goal, setGoal] = useState("");
+  const [, updateState] = useState();
+  const forceUpdate = useCallback(() => updateState({}), []);
 
-  //Newly added
+  // Newly added
   const [saveStatus, setSaveStatus] = useState("Ready");
   //
+
   const { userId } = useParams();
 
   const handleBioChange = (e) => {
@@ -45,9 +48,10 @@ function EditProfilePage({ handleClose }) {
       console.log("Response Data ===>", response.data);
       let data = response.data;
 
-      setBio(response.data.bio);
-      setLocation(response.data.location);
-      setGoal(response.data.goal);
+      // Provide default values in case the data is not available
+      setBio(response.data.bio || "");
+      setLocation(response.data.location || "");
+      setGoal(response.data.goal || "");
     } catch (error) {
       console.log(error);
     }
@@ -55,11 +59,11 @@ function EditProfilePage({ handleClose }) {
 
   useEffect(() => {
     getFields();
-  }, []);
+  }, [userId]);
 
   const handleFormSubmit = (e) => {
     e.preventDefault();
-    //Newly Added
+    // Newly Added
     setSaveStatus("Saving");
 
     axios
@@ -69,10 +73,11 @@ function EditProfilePage({ handleClose }) {
         console.log("profile updated", response.data);
       })
       .catch((error) => {
-        //Newly Added
+        // Newly Added
         setSaveStatus("Error");
         console.log(error);
       });
+    forceUpdate();
   };
 
   return (
@@ -82,7 +87,7 @@ function EditProfilePage({ handleClose }) {
           <Label>Bio: </Label>
           <Input
             type="text"
-            placehoder="A little something about yourself"
+            placeholder="A little something about yourself"
             name="bio"
             onChange={handleBioChange}
             value={bio}

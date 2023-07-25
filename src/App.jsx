@@ -8,7 +8,8 @@ import LoginPage from "./pages/LoginPage";
 import CreateCard from "./components/CreateCard";
 import EditCardPage from "./pages/EditCardPage";
 import ProfilePage from "./components/ProfilePage";
-
+import CardList from "./components/CardList";
+import CardDetails from "./pages/CardDetails";
 function App() {
   return (
     <div className="App">
@@ -19,9 +20,11 @@ function App() {
         {/* <Route path="/projects" element={<ProjectListPage />} /> */}
         {/* <Route path="/projects/:projectId" element={<ProjectDetailsPage />} /> */}
         {/* <Route path="/projects/edit/:projectId" element={<EditProjectPage />} /> */}
+        <Route path={"/users/flashcards/:cardId"} element={<CardDetails />} />
+        <Route path={"/users/flashcards"} element={<CardList />} />
         <Route path="/profile/:userId" element={<ProfilePage />} />
         <Route
-          path={"/users/:userId/flashcards/:cardId/edit"}
+          path={"/users/edit/flashcards/:cardId"}
           element={<EditCardPage />}
         />
         <Route path="/create-card" element={<CreateCard />} />

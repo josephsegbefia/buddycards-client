@@ -5,7 +5,7 @@ import {
   RiUserAddLine,
   RiInformationLine
 } from "react-icons/ri";
-
+import ReactPaginate from "react-paginate";
 export const NavbarContainer = styled.nav`
   // background-color: ;
   padding: 1rem;
@@ -202,5 +202,68 @@ export const EditButton = styled.button`
 
   &:hover {
     background-color: #45a049;
+  }
+`;
+
+export const FlashCardItem = styled.div`
+  width: 80%;
+  max-width: 1000px;
+  background-color: #f5f5f5;
+  border: 1px solid #ccc;
+  padding: 15px;
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
+export const FlashCardWord = styled.h3`
+  flex: 1;
+  margin: 0;
+`;
+
+export const FlashCardTitle = styled.h2`
+  flex: 1;
+  margin: 0;
+`;
+
+export const FlashCardButton = styled.button`
+  color: #fff;
+  border: none;
+  padding: 5px 10px;
+  margin-left: 10px;
+  cursor: pointer;
+  border-radius: 4px;
+`;
+
+export const FlashCardPagination = styled(ReactPaginate)`
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+
+  .pagination {
+    display: inline-block;
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+
+    li {
+      display: inline;
+      margin: 0 5px;
+      cursor: pointer;
+      margin: 2px;
+
+      &.active {
+        font-weight: bold;
+      }
+    }
+
+    a {
+      color: #007bff;
+      text-decoration: none;
+      padding: 5px 10px;
+      border: 1px solid #007bff;
+      border-radius: 4px;
+    }
   }
 `;

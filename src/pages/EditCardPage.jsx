@@ -8,7 +8,8 @@ import {
   Label,
   Input,
   SubmitButton,
-  Header
+  Header,
+  FlashCardTitle
 } from "../layout-components/components";
 import axios from "axios";
 
@@ -16,44 +17,47 @@ const API_URL = "http://localhost:5005";
 
 function EditCardPage(props) {
   const [word, setWord] = useState("");
-  const [partOfSpeech, setPartOfSpeech] = useState("");
-  const [meaning, setMeaning] = useState("");
-
+  const [saveStatus, setSaveStatus] = useState("Ready");
   const { user } = useContext(AuthContext);
   const navigate = useNavigate();
-  const { userId, cardId } = useParams();
+  const { cardId } = useParams();
 
   useEffect(() => {
-    axios
-      .get(`${API_URL}/api/users/${userId}/flashcards/${cardId}`)
-      .then((response) => {
-        const oneCard = response.data;
-        console.log(oneCard);
-        setWord(oneCard.word);
-        setMeaning(oneCard.meaning);
-        setPartOfSpeech(oneCard.partOfSpeech);
-      })
-      .catch((error) => console.log(error));
+    if (user) {
+      axios
+        .get(`${API_URL}/api/users/${user._id}/flashcards/${cardId}`)
+        .then((response) => {
+          const oneCard = response.data;
+          setWord(oneCard.word);
+        })
+        .catch((error) => console.log(error));
+    }
   }, [cardId]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    setSaveStatus("Saving");
+    const requestBody = { word };
 
-    const requestBody = { word, meaning, partOfSpeech };
-    axios
-      .post(
-        `${API_URL}/api/users/${userId}/flashcards/${cardId}/edit`,
-        requestBody
-      )
-      .then((response) => {
-        navigate("/");
-      })
-      .catch((error) => console.log(error));
+    if (user) {
+      axios
+        .post(
+          `${API_URL}/api/users/${user._id}/flashcards/${cardId}/edit`,
+          requestBody
+        )
+        .then((response) => {
+          setSaveStatus("Success");
+          navigate("/users/flashcards");
+        })
+        .catch((error) => {
+          setSaveStatus("Error");
+          console.log(error);
+        });
+    }
   };
 
   return (
     <div className="form-container">
-      {/* <Header>Create your card here</Header> */}
       <Form onSubmit={handleSubmit}>
         <FormGroup>
           <Label>Word:</Label>
@@ -65,27 +69,33 @@ function EditCardPage(props) {
             onChange={(e) => setWord(e.target.value)}
           />
         </FormGroup>
-        <FormGroup>
-          <Label>POS:</Label>
-          <Input
-            type="text"
-            placeholder="provide part of speech"
-            name="pos"
-            value={partOfSpeech}
-            onChange={(e) => setPartOfSpeech(e.target.value)}
-          />
-        </FormGroup>
-        <FormGroup>
-          <Label>Meaning:</Label>
-          <Input
-            type="text"
-            placeholder="meaning"
-            name="word"
-            value={meaning}
-            onChange={(e) => setMeaning(e.target.value)}
-          />
-        </FormGroup>
-        <SubmitButton type="submit">Update</SubmitButton>
+
+        {/* <SubmitButton type="submit">Update</SubmitButton> */}
+        {
+          {
+            Saving: (
+              <SubmitButton value="Creating..." type="submit" disabled>
+                Updating Card...
+              </SubmitButton>
+            ),
+            Success: (
+              <SubmitButton value="Saved" type="submit" disabled>
+                Card Updated!
+              </SubmitButton>
+            ),
+            Error: (
+              <SubmitButton
+                value="Save Failed - Retry?"
+                type="submit"
+              ></SubmitButton>
+            ),
+            Ready: (
+              <SubmitButton value="Save" type="submit">
+                Update
+              </SubmitButton>
+            )
+          }[saveStatus]
+        }
       </Form>
     </div>
   );
