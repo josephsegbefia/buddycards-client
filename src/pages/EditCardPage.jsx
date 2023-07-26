@@ -37,23 +37,43 @@ function EditCardPage(props) {
   const handleSubmit = (e) => {
     e.preventDefault();
     setSaveStatus("Saving");
-    const requestBody = { word };
+    const wordBody = { word };
+    axios
+      .post(`${API_URL}/api/word-manipulation`, wordBody)
+      .then((response) => {
+        console.log(response.data);
+        let conjugations = response.data.conjugations;
+        let translation = response.data.translatedWord;
+        let pos = response.data.pos[0].terms;
 
-    if (user) {
-      axios
-        .post(
-          `${API_URL}/api/users/${user._id}/flashcards/${cardId}/edit`,
-          requestBody
-        )
-        .then((response) => {
-          setSaveStatus("Success");
-          navigate("/users/flashcards");
-        })
-        .catch((error) => {
-          setSaveStatus("Error");
-          console.log(error);
-        });
-    }
+        let requestBody = {
+          user,
+          word,
+          conjugations,
+          translation,
+          partOfSpeech: pos
+        };
+
+        axios
+          .post(
+            `${API_URL}/api/users/${user._id}/flashcards/${cardId}/edit`,
+            requestBody
+          )
+          .then((response) => {
+            setSaveStatus("Success");
+            console.log(response.data);
+          })
+          .catch((error) => {
+            setSaveStatus("Error");
+            console.log(error);
+          });
+      })
+      .catch((error) => {
+        setSaveStatus("Error");
+        console.log(error);
+      });
+
+    setWord("");
   };
 
   return (

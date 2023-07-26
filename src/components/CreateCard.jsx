@@ -70,9 +70,10 @@ function CreateCard(props) {
         console.log(error);
       });
 
-    setWord("");
+    // setWord("");
   };
 
+  console.log(word);
   return (
     <div className="form-container">
       {/* <Header>Create your card here</Header> */}

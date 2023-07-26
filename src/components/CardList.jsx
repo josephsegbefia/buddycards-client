@@ -42,7 +42,7 @@ function CardList() {
         .then((response) => {
           setCards(response.data);
 
-          setTotalPages(Math.ceil(response.data.length / cardsPerPage));
+          // setTotalPages(Math.ceil(response.data.length / cardsPerPage));
         })
         .catch((error) => {
           console.log(error);
@@ -84,9 +84,12 @@ function CardList() {
             </FlashCardButton>
           </Link>
 
-          <FlashCardButton style={{ backgroundColor: "#007bff" }}>
-            View
-          </FlashCardButton>
+          <Link to={`/users/flashcards/${card._id}`}>
+            <FlashCardButton style={{ backgroundColor: "#007bff" }}>
+              View
+            </FlashCardButton>
+          </Link>
+
           <FlashCardButton style={{ backgroundColor: "red" }}>
             Delete
           </FlashCardButton>

@@ -267,3 +267,37 @@ export const FlashCardPagination = styled(ReactPaginate)`
     }
   }
 `;
+
+export const CardContainer = styled.div`
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  padding: 30px;
+  margin-bottom: 20px;
+`;
+
+export const Title = styled.h2`
+  color: #007bff;
+`;
+
+export const SectionTitle = styled.h3`
+  color: #ffbf00;
+  margin-bottom: 10px;
+`;
+
+export const ItemContainer = styled.div`
+  margin-bottom: 5px;
+`;
+
+export const ItemLabel = styled.span`
+  font-weight: bold;
+`;
+
+export const ItemValue = styled.span`
+  color: #555;
+`;
+
+export const HighlightedText = styled.span`
+  background-color: #ffc107;
+  padding: 2px;
+  margin-right: 5px;
+`;
