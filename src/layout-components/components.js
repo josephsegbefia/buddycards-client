@@ -273,6 +273,8 @@ export const CardContainer = styled.div`
   border-radius: 10px;
   padding: 30px;
   margin-bottom: 20px;
+  width: 40rem;
+  max-width: 50rem;
 `;
 
 export const Title = styled.h2`

@@ -1,7 +1,8 @@
 import axios from "axios";
 import { useState, useEffect, useContext } from "react";
 import { AuthContext } from "../context/auth.context";
-import { useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
+import { FaSpinner } from "react-icons/fa";
 import {
   FlashCardTitle,
   CardContainer,
@@ -10,30 +11,35 @@ import {
   ItemContainer,
   ItemLabel,
   ItemValue,
-  HighlightedText
+  HighlightedText,
+  FlashCardButton
 } from "../layout-components/components";
 
 const API_URL = "http://localhost:5005";
 
 function CardDetails() {
-  const [card, setCard] = useState();
   const { cardId } = useParams();
   const { user } = useContext(AuthContext);
+  const [card, setCard] = useState();
 
   useEffect(() => {
     if (user) {
       axios
         .get(`${API_URL}/api/users/${user._id}/flashcards/${cardId}`)
         .then((response) => {
-          //   console.log(response.data.conjugations);
           setCard(response.data);
         })
         .catch((error) => console.log(error));
     }
-  }, []);
+  }, [user, cardId]);
 
-  if (card) {
-    console.log(card.pos);
+  if (!user) {
+    // Render loading state or return null
+    return (
+      <div className="card-container">
+        <FaSpinner />
+      </div>
+    );
   }
 
   return (
@@ -44,53 +50,78 @@ function CardDetails() {
             <FlashCardTitle>Word: {card.word}</FlashCardTitle>
             <Title>Translation:</Title>
             <HighlightedText>{card.translation}</HighlightedText>
+            <hr />
 
-            {/* <SectionTitle>Parts of Speech (POS)</SectionTitle>
-          {card.pos.map((item, index) => (
-            <ItemContainer key={index}>
-              <ItemLabel>Text:</ItemLabel>
-              <ItemValue>
-                <HighlightedText>{item.text}</HighlightedText>
-              </ItemValue>
-              {item.terms.map((term, termIndex) => (
-                <div key={termIndex}>
-                  <ItemLabel>Term {termIndex + 1}:</ItemLabel>
-                  <ItemValue>
-                    {term.pre}
-                    <HighlightedText>{term.text}</HighlightedText>
-                    {term.post}
-                  </ItemValue>
-                </div>
-              ))}
-            </ItemContainer>
-          ))} */}
-
-            <SectionTitle>Conjugations</SectionTitle>
-            {card.conjugations.map((conjugation, index) => (
+            {/* <SectionTitle>Parts of Speech (POS)</SectionTitle> */}
+            {/* {card.pos.map((item, index) => (
               <ItemContainer key={index}>
-                <ItemLabel>{conjugation.infinitive}:</ItemLabel>
-                {Object.entries(conjugation).map(([tense, tenseData]) => (
-                  <div key={tense}>
-                    <ItemLabel>{tense}:</ItemLabel>{" "}
-                    {Object.entries(tenseData).map(([person, conjugated]) => (
-                      <ItemValue key={person}>
-                        <HighlightedText>{conjugated}</HighlightedText>
-                      </ItemValue>
-                    ))}
+                <ItemLabel>Text:</ItemLabel>
+                <ItemValue>
+                  <HighlightedText>{item.text}</HighlightedText>
+                </ItemValue>
+                {item.terms.map((term, termIndex) => (
+                  <div key={termIndex}>
+                    <ItemLabel>Term {termIndex + 1}:</ItemLabel>
+                    <ItemValue>
+                      {term.pre}
+                      <HighlightedText>{term.text}</HighlightedText>
+                      {term.post}
+                    </ItemValue>
                   </div>
                 ))}
               </ItemContainer>
-            ))}
-            <SectionTitle>Root Words</SectionTitle>
+            ))} */}
+
+            {/* {card.pos.map((item, index) => (
+              <div key={index}>
+                <h3>Text: {item.text}</h3>
+                <ul>
+                  {item.terms.map((term, termIndex) => (
+                    <li key={termIndex}>
+                      <strong>{term.text}</strong> - {term.tags.join(", ")}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))} */}
+
+            <SectionTitle>Conjugations</SectionTitle>
+            {card.conjugations ? (
+              card.conjugations.map((conjugation, index) => (
+                <ItemContainer key={index}>
+                  <ItemLabel>{conjugation.infinitive}:</ItemLabel>
+                  {Object.entries(conjugation).map(([tense, tenseData]) => (
+                    <div key={tense}>
+                      <ItemLabel>{tense}:</ItemLabel>{" "}
+                      {Object.entries(tenseData).map(([person, conjugated]) => (
+                        <ItemValue key={person}>
+                          <HighlightedText>{conjugated}</HighlightedText>
+                        </ItemValue>
+                      ))}
+                    </div>
+                  ))}
+                </ItemContainer>
+              ))
+            ) : (
+              <ItemValue>Nothing to conjugate..no verbs present</ItemValue>
+            )}
+
+            {/* <SectionTitle>Root Words</SectionTitle>
             <ItemContainer>
               <ItemLabel>Word:</ItemLabel>{" "}
               <ItemValue>
                 <HighlightedText>{card.word}</HighlightedText>
               </ItemValue>
-            </ItemContainer>
+            </ItemContainer> */}
           </div>
         )}
       </CardContainer>
+      <br />
+      <Link to="/users/flashcards">
+        <FlashCardButton style={{ backgroundColor: "red" }}>
+          Back to Cards
+        </FlashCardButton>
+      </Link>
     </div>
   );
 }

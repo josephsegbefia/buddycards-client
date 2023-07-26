@@ -10,6 +10,7 @@ import EditCardPage from "./pages/EditCardPage";
 import ProfilePage from "./components/ProfilePage";
 import CardList from "./components/CardList";
 import CardDetails from "./pages/CardDetails";
+import Learn from "./components/Learn";
 function App() {
   return (
     <div className="App">
@@ -20,6 +21,7 @@ function App() {
         {/* <Route path="/projects" element={<ProjectListPage />} /> */}
         {/* <Route path="/projects/:projectId" element={<ProjectDetailsPage />} /> */}
         {/* <Route path="/projects/edit/:projectId" element={<EditProjectPage />} /> */}
+        <Route path="/learn" element={<Learn />} />
         <Route path={"/users/flashcards/:cardId"} element={<CardDetails />} />
         <Route path={"/users/flashcards"} element={<CardList />} />
         <Route path="/profile/:userId" element={<ProfilePage />} />
