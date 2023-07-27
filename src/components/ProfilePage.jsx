@@ -1,5 +1,7 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import axios from "axios";
+import { FaSpinner } from "react-icons/fa";
+import { AuthContext } from "../context/auth.context";
 import {
   ProfileContainer,
   Avatar,
@@ -16,16 +18,30 @@ import { useParams } from "react-router-dom";
 
 const ProfilePage = () => {
   const [fullName, setFullName] = useState("");
-  const [user, setUser] = useState("");
+  // const [user, setUser] = useState("");
   const [bio, setBio] = useState("");
   const [location, setLocation] = useState("");
   const [avatarURL, setAvatarURL] = useState("");
   const [goal, setGoal] = useState("");
   const [editClicked, setEditClicked] = useState(false);
+  const [cards, setCards] = useState([]);
 
   const { userId } = useParams();
+  const { user } = useContext(AuthContext);
 
   const API_URL = "http://localhost:5005";
+  useEffect(() => {
+    if (user) {
+      axios
+        .get(`${API_URL}/api/users/${user._id}/flashcards`)
+        .then((response) => {
+          setCards(response.data);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }
+  }, [user]);
 
   const handleEditClose = () => {
     setEditClicked(false);
@@ -35,11 +51,11 @@ const ProfilePage = () => {
     axios
       .get(`${API_URL}/api/profile/${userId}`)
       .then((response) => {
-        // console.log(response.data);
+        console.log(response.data);
         setFullName(response.data.user);
         setBio(response.data.bio);
         setLocation(response.data.location);
-        setAvatarURL(response.data.avatarURL);
+        setAvatarURL(response.data.avatar);
         setGoal(response.data.goal);
       })
       .catch((error) => {
@@ -47,6 +63,15 @@ const ProfilePage = () => {
       });
   }, []);
 
+  console.log(avatarURL);
+  // if (!user) {
+  //   return (
+  //     <div className="card-container">
+  //       <FaSpinner />
+  //     </div>
+  //   );
+  // }
+  // console.log(cards);
   return (
     <ProfileContainer>
       <ProfileNav />
@@ -61,6 +86,7 @@ const ProfilePage = () => {
       <Bio>Bio: {bio}</Bio>
       <Location>Location: {location}</Location>
       <Interests>Goal: {goal}</Interests>
+      <h4>You have created {cards.length} cards!</h4>
       <br />
       {editClicked ? (
         <EditProfilePage handleClose={handleEditClose} />

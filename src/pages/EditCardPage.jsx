@@ -1,6 +1,8 @@
 import { useState, useEffect, useContext } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { AuthContext } from "../context/auth.context";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 import {
   Form,
@@ -61,10 +63,13 @@ function EditCardPage(props) {
           )
           .then((response) => {
             setSaveStatus("Success");
+            toast.success("Card Edited");
+
             console.log(response.data);
           })
           .catch((error) => {
             setSaveStatus("Error");
+            toast.error("Not Edited");
             console.log(error);
           });
       })

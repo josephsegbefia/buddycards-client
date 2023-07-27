@@ -2,6 +2,8 @@
 import { AuthContext } from "../context/auth.context";
 import { useState, useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import axios from "axios";
 
 import {
@@ -42,6 +44,9 @@ function SignupPage(props) {
         // console.log(response.data.user._id);
         const userId = response.data.user._id; // Get the userId from the response
         setUserId(userId);
+        toast.success("Sign Up Successful! Please Login", {
+          position: toast.POSITION.TOP_RIGHT
+        });
         navigate("/login");
 
         // Move the second request inside this .then() block

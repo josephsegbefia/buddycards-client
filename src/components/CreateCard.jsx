@@ -2,6 +2,8 @@ import axios from "axios";
 import { useState, useEffect, useContext } from "react";
 import { AuthContext } from "../context/auth.context";
 import { useNavigate } from "react-router-dom";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import {
   Form,
   FormGroup,
@@ -22,14 +24,6 @@ function CreateCard(props) {
 
   const handleWordChange = (e) => {
     setWord(e.target.value);
-  };
-
-  const handlePartOfSpeechChange = (e) => {
-    setPartOfSpeech(e.target.value);
-  };
-
-  const handleMeaningChange = (e) => {
-    setMeaning(e.target.value);
   };
 
   const handleSubmit = (e) => {
@@ -59,6 +53,10 @@ function CreateCard(props) {
           .then((response) => {
             setSaveStatus("Success");
             console.log(response.data);
+            toast.success("Card Created!", {
+              position: toast.POSITION.TOP_RIGHT
+            });
+            navigate("/users/flashcards");
           })
           .catch((error) => {
             setSaveStatus("Error");

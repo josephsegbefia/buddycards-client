@@ -2,6 +2,8 @@ import { useContext, useState, useEffect } from "react";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
 import { AuthContext } from "../context/auth.context";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import {
   Form,
   FormGroup,
@@ -33,12 +35,18 @@ function LoginPage(props) {
         console.log("JWT token", response.data.authToken);
         storeToken(response.data.authToken);
         authenticateUser();
+        toast.success("Login successful", {
+          position: toast.POSITION.TOP_RIGHT
+        });
 
         navigate(`/profile/${response.data.userId}`);
       })
       .catch((error) => {
         const errorDescription = error.response.data.message;
         setErrorMessage(errorDescription);
+        toast.error("Login Failed. Try Again", {
+          position: toast.POSITION.TOP_RIGHT
+        });
       });
   };
 

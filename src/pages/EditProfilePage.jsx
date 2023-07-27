@@ -19,15 +19,23 @@ function EditProfilePage({ handleClose }) {
   const [bio, setBio] = useState("");
   const [location, setLocation] = useState("");
   const [goal, setGoal] = useState("");
-  const [, updateState] = useState();
-  const forceUpdate = useCallback(() => updateState({}), []);
-
+  const [imgUrl, setImgUrl] = useState("");
   // Newly added
   const [saveStatus, setSaveStatus] = useState("Ready");
   //
 
   const { userId } = useParams();
 
+  const handleFileUpload = (e) => {
+    const uploadData = new FormData();
+
+    uploadData.append("avatarurl", e.target.files[0]);
+
+    axios
+      .post(`${API_URL}/api/upload`)
+      .then((response) => setImgUrl(response.fileUrl))
+      .catch((error) => console.log(error));
+  };
   const handleBioChange = (e) => {
     setBio(e.target.value);
   };
@@ -40,7 +48,7 @@ function EditProfilePage({ handleClose }) {
     setGoal(e.target.value);
   };
 
-  const requestBody = { bio, location, goal };
+  const requestBody = { bio, location, goal, avatarurl: imgUrl };
 
   const getFields = async () => {
     try {
@@ -59,7 +67,7 @@ function EditProfilePage({ handleClose }) {
 
   useEffect(() => {
     getFields();
-  }, [userId]);
+  }, []);
 
   const handleFormSubmit = (e) => {
     e.preventDefault();
@@ -77,7 +85,6 @@ function EditProfilePage({ handleClose }) {
         setSaveStatus("Error");
         console.log(error);
       });
-    forceUpdate();
   };
 
   return (
@@ -105,7 +112,11 @@ function EditProfilePage({ handleClose }) {
         </FormGroup>
         <FormGroup>
           <Label>Avatar:</Label>
-          <Input type="file" name="profile-avatar" />
+          <Input
+            type="file"
+            name="avatarurl"
+            onChange={(e) => handleFileUpload(e)}
+          />
         </FormGroup>
         <FormGroup>
           <Label>Goal:</Label>

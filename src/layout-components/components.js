@@ -236,38 +236,6 @@ export const FlashCardButton = styled.button`
   border-radius: 4px;
 `;
 
-export const FlashCardPagination = styled(ReactPaginate)`
-  display: flex;
-  justify-content: center;
-  margin-top: 20px;
-
-  .pagination {
-    display: inline-block;
-    list-style-type: none;
-    padding: 0;
-    margin: 0;
-
-    li {
-      display: inline;
-      margin: 0 5px;
-      cursor: pointer;
-      margin: 2px;
-
-      &.active {
-        font-weight: bold;
-      }
-    }
-
-    a {
-      color: #007bff;
-      text-decoration: none;
-      padding: 5px 10px;
-      border: 1px solid #007bff;
-      border-radius: 4px;
-    }
-  }
-`;
-
 export const CardContainer = styled.div`
   border: 1px solid #ccc;
   border-radius: 10px;
@@ -302,4 +270,40 @@ export const HighlightedText = styled.span`
   background-color: #ffc107;
   padding: 2px;
   margin-right: 5px;
+`;
+
+export const PracticeContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+`;
+
+export const PracticeFlashCardContainer = styled.div`
+  width: 300px;
+  height: 200px;
+  position: relative;
+  border: 1px solid #ccc;
+  perspective: 1000px;
+  cursor: pointer;
+`;
+
+export const PracticeFlashCard = styled.div`
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  backface-visibility: hidden;
+  transition: transform 0.6s;
+`;
+
+export const PracticeFlashCardFront = styled(PracticeFlashCard)`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #f0f0f0;
+`;
+
+export const PracticeFlashCardBack = styled(PracticeFlashCard)`
+  transform: rotateY(180deg);
+  background-color: #fff;
 `;

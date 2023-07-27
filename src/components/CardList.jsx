@@ -1,15 +1,14 @@
 import axios from "axios";
 import { useState, useEffect, useContext } from "react";
 import { AuthContext } from "../context/auth.context";
-import { Link } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import {
   Input,
   Label,
   FlashCardItem,
   FlashCardWord,
   FlashCardButton,
-  FlashCardTitle,
-  FlashCardPagination
+  FlashCardTitle
 } from "../layout-components/components";
 import ReactPaginate from "react-paginate";
 
@@ -18,6 +17,9 @@ function CardList() {
   const [searchTerm, setSearchTerm] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [cardsPerPage] = useState(5);
+
+  const navigate = useNavigate();
+  const { cardId } = useParams();
 
   const { user } = useContext(AuthContext);
 
@@ -33,26 +35,15 @@ function CardList() {
   useEffect(() => {
     if (user) {
       axios
-        .get(`${API_URL}/api/users/${user._id}/flashcards`, {
-          // params: {
-          //   offset: (currentPage - 1) * cardsPerPage,
-          //   limit: cardsPerPage
-          // }
-        })
+        .get(`${API_URL}/api/users/${user._id}/flashcards`)
         .then((response) => {
           setCards(response.data);
-
-          // setTotalPages(Math.ceil(response.data.length / cardsPerPage));
         })
         .catch((error) => {
           console.log(error);
         });
     }
-  }, [
-    user
-    // currentPage,
-    // searchedCard.length
-  ]);
+  }, [user]);
 
   const handleSearch = (e) => {
     const word = e.target.value;
@@ -61,6 +52,28 @@ function CardList() {
 
   const paginate = ({ selected }) => {
     setCurrentPage(selected + 1);
+  };
+
+  const handleDelete = (cardId) => {
+    // Make API call to delete the card
+    axios
+      .post(`${API_URL}/api/users/${user._id}/flashcards/${cardId}/delete`)
+      .then((response) => {
+        if (response.status === 200) {
+          // Filter out the deleted card from the state
+          setCards((prevCards) =>
+            prevCards.filter((card) => card._id !== cardId)
+          );
+          // Update local storage with the updated cards
+          localStorage.setItem(
+            "flashcards",
+            JSON.stringify(cards.filter((card) => card._id !== cardId))
+          );
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   };
   return (
     <div className="flashcard-container">
@@ -90,7 +103,10 @@ function CardList() {
             </FlashCardButton>
           </Link>
 
-          <FlashCardButton style={{ backgroundColor: "red" }}>
+          <FlashCardButton
+            style={{ backgroundColor: "red" }}
+            onClick={() => handleDelete(card._id)}
+          >
             Delete
           </FlashCardButton>
         </FlashCardItem>
