@@ -13,8 +13,11 @@ const HomePage = () => {
       <AppInfo>
         <AppTitle>Welcome to Our App</AppTitle>
         <AppDescription>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam eget
-          arcu tellus. Sed in justo vel lectus fermentum rhoncus nec et lectus.
+          Welcome to DeutschFlash!** DeutschFlash is an interactive language
+          learning app designed to help you master the German language
+          effortlessly. Whether you're a beginner or an advanced learner,
+          DeutschFlash offers a wide range of features to enhance your language
+          skills.
         </AppDescription>
       </AppInfo>
     </HomeWrapper>

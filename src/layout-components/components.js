@@ -97,7 +97,7 @@ export const SubmitButton = styled.button`
   }
 `;
 
-export const Header = styled.h3`
+export const Header = styled.h2`
   text-align: center;
 `;
 

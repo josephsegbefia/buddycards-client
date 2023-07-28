@@ -83,3 +83,9 @@ a {
   display: flex;
   margin: 1rem;
 }
+
+.results {
+  display: flex;
+  margin-top: 4rem;
+  justify-content: center;
+}

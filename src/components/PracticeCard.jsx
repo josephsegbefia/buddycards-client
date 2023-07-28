@@ -79,42 +79,46 @@ function PracticeCard({ onClick }) {
   }
 
   return (
-    <div className="card-container card">
-      <h1>Practice Mode</h1>
-      <br />
-      <CardContainer className="card-front">
-        <Form onSubmit={handleSubmit}>
-          <FormGroup>
-            <Label>Word / Sentence:</Label>
-            <h3>{currentCard.word}</h3>
-            <Input
-              type="text"
-              value={userAnswer}
-              placeholder="Please provide translation here"
-              onChange={handleAnswerChange}
-            />
-          </FormGroup>
-        </Form>
-        <div style={{ display: "flex", justifyContent: "center" }}>
-          <EditButton onClick={onClick} disabled={disabled}>
-            Submit
-          </EditButton>
-        </div>
-      </CardContainer>
+    <div>
+      <div className="results">
+        <h2>Practice Mode</h2>
+      </div>
 
-      <CardContainer className="card-back">
-        <h3>Back</h3>
-        {currentCard.translation}
-        {score}
-        <FlashCardButton
-          onClick={() => {
-            onClick(), handleNextCard(), setDisabled(true);
-          }}
-          style={{ backgroundColor: "green" }}
-        >
-          Next Card
-        </FlashCardButton>
-      </CardContainer>
+      <div className="card-container card">
+        <CardContainer className="card-front">
+          <Form onSubmit={handleSubmit}>
+            <FormGroup>
+              <Label>Word / Sentence:</Label>
+              <h3>{currentCard.word}</h3>
+              <Input
+                type="text"
+                value={userAnswer}
+                placeholder="Please provide translation here"
+                onChange={handleAnswerChange}
+              />
+            </FormGroup>
+          </Form>
+          <div style={{ display: "flex", justifyContent: "center" }}>
+            <EditButton onClick={onClick} disabled={disabled}>
+              Submit
+            </EditButton>
+          </div>
+        </CardContainer>
+
+        <CardContainer className="card-back results">
+          {currentCard.translation}
+          <br />
+
+          <FlashCardButton
+            onClick={() => {
+              onClick(), handleNextCard(), setDisabled(true);
+            }}
+            style={{ backgroundColor: "green", display: "block" }}
+          >
+            Next Card
+          </FlashCardButton>
+        </CardContainer>
+      </div>
     </div>
   );
 }
